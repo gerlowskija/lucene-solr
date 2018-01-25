@@ -568,6 +568,8 @@ echo Usage: solr auth enable [-type basicAuth] -credentials user:pass [-blockUnk
 echo        solr auth enable [-type basicAuth] -prompt ^<true|false^> [-blockUnknown ^<true|false^>] [-updateIncludeFileOnly ^<true|false^>] [-V]
 echo        solr auth disable [-updateIncludeFileOnly ^<true|false^>] [-V]
 echo
+echo  Updates or enables/disables authentication.  Must be run on the machine hosting Solr.
+echo
 echo   -type ^<type^>                 The authentication mechanism to enable. Defaults to 'basicAuth'.
 echo
 echo   -credentials ^<user:pass^>     The username and password of the initial user
