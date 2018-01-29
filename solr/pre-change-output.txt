@@ -1,0 +1,428 @@
++ bin/solr start -h
+*** [WARN] *** Your open file limit is currently 256.  
+ It should be set to 65000 to avoid operational disruption. 
+ If you no longer wish to see this warning, set SOLR_ULIMIT_CHECKS to false in your profile or solr.in.sh
+*** [WARN] ***  Your Max Processes Limit is currently 709. 
+ It should be set to 65000 to avoid operational disruption. 
+ If you no longer wish to see this warning, set SOLR_ULIMIT_CHECKS to false in your profile or solr.in.sh
+
+ERROR: Hostname is required when using the -h option!
+
+
+Usage: solr start [-f] [-c] [-h hostname] [-p port] [-d directory] [-z zkHost] [-m memory] [-e example] [-s solr.solr.home] [-t solr.data.home] [-a "additional-options"] [-V]
+
+  -f            Start Solr in foreground; default starts Solr in the background
+                  and sends stdout / stderr to solr-PORT-console.log
+
+  -c or -cloud  Start Solr in SolrCloud mode; if -z not supplied, an embedded Zookeeper
+                  instance is started on Solr port+1000, such as 9983 if Solr is bound to 8983
+
+  -h <host>     Specify the hostname for this Solr instance
+
+  -p <port>     Specify the port to start the Solr HTTP listener on; default is 8983
+                  The specified port (SOLR_PORT) will also be used to determine the stop port
+                  STOP_PORT=($SOLR_PORT-1000) and JMX RMI listen port RMI_PORT=($SOLR_PORT+10000). 
+                  For instance, if you set -p 8985, then the STOP_PORT=7985 and RMI_PORT=18985
+
+  -d <dir>      Specify the Solr server directory; defaults to server
+
+  -z <zkHost>   Zookeeper connection string; only used when running in SolrCloud mode using -c
+                   To launch an embedded Zookeeper instance, don't pass this parameter.
+
+  -m <memory>   Sets the min (-Xms) and max (-Xmx) heap size for the JVM, such as: -m 4g
+                  results in: -Xms4g -Xmx4g; by default, this script sets the heap size to 512m
+
+  -s <dir>      Sets the solr.solr.home system property; Solr will create core directories under
+                  this directory. This allows you to run multiple Solr instances on the same host
+                  while reusing the same server directory set using the -d parameter. If set, the
+                  specified directory should contain a solr.xml file, unless solr.xml exists in Zookeeper.
+                  This parameter is ignored when running examples (-e), as the solr.solr.home depends
+                  on which example is run. The default value is server/solr. If passed relative dir,
+                  validation with current dir will be done, before trying default server/<dir>
+
+  -t <dir>      Sets the solr.data.home system property, where Solr will store data (index).
+                  If not set, Solr uses solr.solr.home for config and data.
+
+  -e <example>  Name of the example to run; available examples:
+      cloud:         SolrCloud example
+      techproducts:  Comprehensive example illustrating many of Solr's core capabilities
+      dih:           Data Import Handler
+      schemaless:    Schema-less example
+
+  -a            Additional parameters to pass to the JVM when starting Solr, such as to setup
+                  Java debug options. For example, to enable a Java debugger to attach to the Solr JVM
+                  you could pass: -a "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18983"
+                  In most cases, you should wrap the additional parameters in double quotes.
+
+  -j            Additional parameters to pass to Jetty when starting Solr.
+                  For example, to add configuration folder that jetty should read
+                  you could pass: -j "--include-jetty-dir=/etc/jetty/custom/server/"
+                  In most cases, you should wrap the additional parameters in double quotes.
+
+  -noprompt     Don't prompt for input; accept all defaults when running examples that accept user input
+
+  -v and -q     Verbose (-v) or quiet (-q) logging. Sets default log level to DEBUG or WARN instead of INFO
+
+  -V or -verbose Verbose messages from this script
+
++ bin/solr stop -h
+
+ERROR: Hostname is required when using the -h option!
+
+
+Usage: solr stop [-k key] [-p port] [-V]
+
+  -k <key>      Stop key; default is solrrocks
+
+  -p <port>     Specify the port the Solr HTTP listener is bound to
+
+  -all          Find and stop all running Solr servers on this host
+
+  NOTE: To see if any Solr servers are running, do: solr status
+
++ bin/solr restart -h
+*** [WARN] *** Your open file limit is currently 256.  
+ It should be set to 65000 to avoid operational disruption. 
+ If you no longer wish to see this warning, set SOLR_ULIMIT_CHECKS to false in your profile or solr.in.sh
+*** [WARN] ***  Your Max Processes Limit is currently 709. 
+ It should be set to 65000 to avoid operational disruption. 
+ If you no longer wish to see this warning, set SOLR_ULIMIT_CHECKS to false in your profile or solr.in.sh
+
+ERROR: Hostname is required when using the -h option!
+
+
+Usage: solr restart [-f] [-c] [-h hostname] [-p port] [-d directory] [-z zkHost] [-m memory] [-e example] [-s solr.solr.home] [-t solr.data.home] [-a "additional-options"] [-V]
+
+  -f            Start Solr in foreground; default starts Solr in the background
+                  and sends stdout / stderr to solr-PORT-console.log
+
+  -c or -cloud  Start Solr in SolrCloud mode; if -z not supplied, an embedded Zookeeper
+                  instance is started on Solr port+1000, such as 9983 if Solr is bound to 8983
+
+  -h <host>     Specify the hostname for this Solr instance
+
+  -p <port>     Specify the port to start the Solr HTTP listener on; default is 8983
+                  The specified port (SOLR_PORT) will also be used to determine the stop port
+                  STOP_PORT=($SOLR_PORT-1000) and JMX RMI listen port RMI_PORT=($SOLR_PORT+10000). 
+                  For instance, if you set -p 8985, then the STOP_PORT=7985 and RMI_PORT=18985
+
+  -d <dir>      Specify the Solr server directory; defaults to server
+
+  -z <zkHost>   Zookeeper connection string; only used when running in SolrCloud mode using -c
+                   To launch an embedded Zookeeper instance, don't pass this parameter.
+
+  -m <memory>   Sets the min (-Xms) and max (-Xmx) heap size for the JVM, such as: -m 4g
+                  results in: -Xms4g -Xmx4g; by default, this script sets the heap size to 512m
+
+  -s <dir>      Sets the solr.solr.home system property; Solr will create core directories under
+                  this directory. This allows you to run multiple Solr instances on the same host
+                  while reusing the same server directory set using the -d parameter. If set, the
+                  specified directory should contain a solr.xml file, unless solr.xml exists in Zookeeper.
+                  This parameter is ignored when running examples (-e), as the solr.solr.home depends
+                  on which example is run. The default value is server/solr. If passed relative dir,
+                  validation with current dir will be done, before trying default server/<dir>
+
+  -t <dir>      Sets the solr.data.home system property, where Solr will store data (index).
+                  If not set, Solr uses solr.solr.home for config and data.
+
+  -e <example>  Name of the example to run; available examples:
+      cloud:         SolrCloud example
+      techproducts:  Comprehensive example illustrating many of Solr's core capabilities
+      dih:           Data Import Handler
+      schemaless:    Schema-less example
+
+  -a            Additional parameters to pass to the JVM when starting Solr, such as to setup
+                  Java debug options. For example, to enable a Java debugger to attach to the Solr JVM
+                  you could pass: -a "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18983"
+                  In most cases, you should wrap the additional parameters in double quotes.
+
+  -j            Additional parameters to pass to Jetty when starting Solr.
+                  For example, to add configuration folder that jetty should read
+                  you could pass: -j "--include-jetty-dir=/etc/jetty/custom/server/"
+                  In most cases, you should wrap the additional parameters in double quotes.
+
+  -noprompt     Don't prompt for input; accept all defaults when running examples that accept user input
+
+  -v and -q     Verbose (-v) or quiet (-q) logging. Sets default log level to DEBUG or WARN instead of INFO
+
+  -V or -verbose Verbose messages from this script
+
++ bin/solr status -h
+
+No Solr nodes are running.
+
++ bin/solr healthcheck -h
+
+ERROR: Unrecognized or misplaced argument: -h!
+
+
+Usage: solr healthcheck [-c collection] [-z zkHost] [-V]
+
+  -c <collection>  Collection to run healthcheck against.
+
+  -z <zkHost>      Zookeeper connection string; default is localhost:9983
+
+  -V               Enable more verbose output
+
++ bin/solr create -h
+
+ERROR: Unrecognized or misplaced argument: -h!
+
+
+Usage: solr create [-c name] [-d confdir] [-n configName] [-shards #] [-replicationFactor #] [-p port] [-V]
+
+  Create a core or collection depending on whether Solr is running in standalone (core) or SolrCloud
+  mode (collection). In other words, this action detects which mode Solr is running in, and then takes
+  the appropriate action (either create_core or create_collection). For detailed usage instructions, do:
+
+    bin/solr create_core -help
+
+       or
+
+    bin/solr create_collection -help
+
++ bin/solr create_core -h
+
+ERROR: Unrecognized or misplaced argument: -h!
+
+
+Usage: solr create_core [-c core] [-d confdir] [-p port] [-V]
+
+  -c <core>     Name of core to create
+
+  -d <confdir>  Configuration directory to copy when creating the new core, built-in options are:
+
+      _default: Minimal configuration, which supports enabling/disabling field-guessing support
+      sample_techproducts_configs: Example configuration with many optional features enabled to
+         demonstrate the full power of Solr
+
+      If not specified, default is: _default
+
+      Alternatively, you can pass the path to your own configuration directory instead of using
+      one of the built-in configurations, such as: bin/solr create_core -c mycore -d /tmp/myconfig
+
+  -p <port>     Port of a local Solr instance where you want to create the new core
+                  If not specified, the script will search the local system for a running
+                  Solr instance and will use the port of the first server it finds.
+
+  -V            Enable more verbose output.
+
++ bin/solr create_collection -h
+
+ERROR: Unrecognized or misplaced argument: -h!
+
+
+Usage: solr create_collection [-c collection] [-d confdir] [-n configName] [-shards #] [-replicationFactor #] [-p port] [-V]
+
+  -c <collection>         Name of collection to create
+
+  -d <confdir>            Configuration directory to copy when creating the new collection, built-in options are:
+
+      _default: Minimal configuration, which supports enabling/disabling field-guessing support
+      sample_techproducts_configs: Example configuration with many optional features enabled to
+         demonstrate the full power of Solr
+
+      If not specified, default is: _default
+
+      Alternatively, you can pass the path to your own configuration directory instead of using
+      one of the built-in configurations, such as: bin/solr create_collection -c mycoll -d /tmp/myconfig
+
+      By default the script will upload the specified confdir directory into Zookeeper using the same
+      name as the collection (-c) option. Alternatively, if you want to reuse an existing directory
+      or create a confdir in Zookeeper that can be shared by multiple collections, use the -n option
+
+  -n <configName>         Name the configuration directory in Zookeeper; by default, the configuration
+                            will be uploaded to Zookeeper using the collection name (-c), but if you want
+                            to use an existing directory or override the name of the configuration in
+                            Zookeeper, then use the -c option.
+
+  -shards <#>             Number of shards to split the collection into; default is 1
+
+  -replicationFactor <#>  Number of copies of each document in the collection, default is 1 (no replication)
+
+  -p <port>               Port of a local Solr instance where you want to create the new collection
+                            If not specified, the script will search the local system for a running
+                            Solr instance and will use the port of the first server it finds.
+
+  -V                      Enable more verbose output.
+
++ bin/solr delete -h
+
+ERROR: Unrecognized or misplaced argument: -h!
+
+
+Usage: solr delete [-c name] [-deleteConfig true|false] [-p port] [-V]
+
+  Deletes a core or collection depending on whether Solr is running in standalone (core) or SolrCloud
+  mode (collection). If you're deleting a collection in SolrCloud mode, the default behavior is to also
+  delete the configuration directory from Zookeeper so long as it is not being used by another collection.
+  You can override this behavior by passing -deleteConfig false when running this command.
+
+  -c <name>               Name of the core / collection to delete
+
+  -deleteConfig <boolean> Delete the configuration directory from Zookeeper; default is true
+
+  -p <port>               Port of a local Solr instance where you want to delete the core/collection
+                            If not specified, the script will search the local system for a running
+                            Solr instance and will use the port of the first server it finds.
+
+  -V                      Enables more verbose output.
+
++ bin/solr version -h
+
+ERROR: version is not a valid command!
+
+
+Usage: solr COMMAND OPTIONS
+       where COMMAND is one of: start, stop, restart, status, healthcheck, create, create_core, create_collection, delete, version, zk, auth, assert
+
+  Standalone server example (start Solr running in the background on port 8984):
+
+    ./solr start -p 8984
+
+  SolrCloud example (start Solr running in SolrCloud mode using localhost:2181 to connect to Zookeeper, with 1g max heap size and remote Java debug options enabled):
+
+    ./solr start -c -m 1g -z localhost:2181 -a "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044"
+
+Pass -help after any COMMAND to see command-specific usage information,
+  such as:    ./solr start -help or ./solr stop -help
+
++ bin/solr zk -h
+  Usage: solr zk upconfig|downconfig -d <confdir> -n <configName> [-z zkHost]
+         solr zk cp [-r] <src> <dest> [-z zkHost]
+         solr zk rm [-r] <path> [-z zkHost]
+         solr zk mv <src> <dest> [-z zkHost]
+         solr zk ls [-r] <path> [-z zkHost]
+         solr zk mkroot <path> [-z zkHost]
+
+Type bin/solr zk -help for full usage help
+         Be sure to check the Solr logs in case of errors.
+
+             -z zkHost  Optional Zookeeper connection string for all commands. If specified it
+                        overrides the 'ZK_HOST=...'' defined in solr.in.sh.
+
+             -V        Enable more verbose output.
+
+         upconfig uploads a configset from the local machine to Zookeeper. (Backcompat: -upconfig)
+
+         downconfig downloads a configset from Zookeeper to the local machine. (Backcompat: -downconfig)
+
+             -n configName    Name of the configset in Zookeeper that will be the destination of
+                             'upconfig' and the source for 'downconfig'.
+
+             -d confdir      The local directory the configuration will be uploaded from for
+                             'upconfig' or downloaded to for 'downconfig'. If 'confdir' is a child of
+                             ...solr/server/solr/configsets' then the configs will be copied from/to
+                             that directory. Otherwise it is interpreted as a simple local path.
+
+         cp copies files or folders to/from Zookeeper or Zokeeper -> Zookeeper
+             -r    Recursively copy <src> to <dst>. Command will fail if <src> has children and 
+                        -r is not specified. Optional
+
+             <src>, <dest> : [file:][/]path/to/local/file or zk:/path/to/zk/node
+                             NOTE: <src> and <dest> may both be Zookeeper resources prefixed by 'zk:'
+             When <src> is a zk resource, <dest> may be '.'
+             If <dest> ends with '/', then <dest> will be a local folder or parent znode and the last
+             element of the <src> path will be appended unless <src> also ends in a slash. 
+             <dest> may be zk:, which may be useful when using the cp -r form to backup/restore 
+             the entire zk state.
+             You must enclose local paths that end in a wildcard in quotes or just
+             end the local path in a slash. That is,
+             'bin/solr zk cp -r /some/dir/ zk:/ -z localhost:2181' is equivalent to
+             'bin/solr zk cp -r "/some/dir/*" zk:/ -z localhost:2181'
+             but 'bin/solr zk cp -r /some/dir/* zk:/ -z localhost:2181' will throw an error
+
+             here's an example of backup/restore for a ZK configuration:
+             to copy to local: 'bin/solr zk cp -r zk:/ /some/dir -z localhost:2181'
+             to restore to ZK: 'bin/solr zk cp -r /some/dir/ zk:/ -z localhost:2181'
+
+             The 'file:' prefix is stripped, thus 'file:/wherever' specifies an absolute local path and
+             'file:somewhere' specifies a relative local path. All paths on Zookeeper are absolute.
+
+             Zookeeper nodes CAN have data, so moving a single file to a parent znode
+             will overlay the data on the parent Znode so specifying the trailing slash
+             can be important.
+
+             Wildcards are supported when copying from local, trailing only and must be quoted.
+
+         rm deletes files or folders on Zookeeper
+             -r     Recursively delete if <path> is a directory. Command will fail if <path>
+                    has children and -r is not specified. Optional
+             <path> : [zk:]/path/to/zk/node. <path> may not be the root ('/')
+
+         mv moves (renames) znodes on Zookeeper
+             <src>, <dest> : Zookeeper nodes, the 'zk:' prefix is optional.
+             If <dest> ends with '/', then <dest> will be a parent znode
+             and the last element of the <src> path will be appended.
+             Zookeeper nodes CAN have data, so moving a single file to a parent znode
+             will overlay the data on the parent Znode so specifying the trailing slash
+             is important.
+
+         ls lists the znodes on Zookeeper
+             -r recursively descends the path listing all znodes. Optional
+             <path>: The Zookeeper path to use as the root.
+
+             Only the node names are listed, not data
+
+         mkroot makes a znode on Zookeeper with no data. Can be used to make a path of arbitrary
+             depth but primarily intended to create a 'chroot'.
+
+             <path>: The Zookeeper path to create. Leading slash is assumed if not present.
+                     Intermediate nodes are created as needed if not present.
+
++ bin/solr auth -h
+
+Usage: solr auth enable [-type basicAuth] -credentials user:pass [-blockUnknown <true|false>] [-updateIncludeFileOnly <true|false>] [-V]
+       solr auth enable [-type basicAuth] -prompt <true|false> [-blockUnknown <true|false>] [-updateIncludeFileOnly <true|false>] [-V]
+       solr auth enable -type kerberos -config "<kerberos configs>" [-updateIncludeFileOnly <true|false>] [-V]
+       solr auth disable [-updateIncludeFileOnly <true|false>] [-V]
+
+  -type <type>                           The authentication mechanism (basicAuth or kerberos) to enable. Defaults to 'basicAuth'.
+
+  -credentials <user:pass>               The username and password of the initial user. Applicable for basicAuth only.
+                                         Note: only one of -prompt or -credentials must be provided
+
+  -config "<configs>"                    Configuration parameters (Solr startup parameters). Required and applicable only for Kerberos
+
+  -prompt <true|false>                   Prompts the user to provide the credentials. Applicable for basicAuth only.
+                                         Note: only one of -prompt or -credentials must be provided
+
+  -blockUnknown <true|false>             When true, this blocks out access to unauthenticated users. When not provided,
+                                         this defaults to false (i.e. unauthenticated users can access all endpoints, except the
+                                         operations like collection-edit, security-edit, core-admin-edit etc.). Check the reference
+                                         guide for Basic Authentication for more details. Applicable for basicAuth only.
+
+  -updateIncludeFileOnly <true|false>    Only update the solr.in.sh or solr.in.cmd file, and skip actual enabling/disabling
+                                         authentication (i.e. don't update security.json)
+
+  -z zkHost                              Zookeeper connection string
+
+  -d <dir>                               Specify the Solr server directory
+
+  -s <dir>                               Specify the Solr home directory. This is where any credentials or authentication
+                                         configuration files (e.g. basicAuth.conf) would be placed.
+
+  -V                                     Enable more verbose output.
+
++ bin/solr assert -h
+Failed to parse command-line arguments due to: Unrecognized option: -h
+usage: org.apache.solr.util.SolrCLI
+ -e,--exitcode                 Return an exit code instead of printing
+                               error message on assert fail.
+ -help                         Print this message
+ -m,--message <message>        Exception message to be used in place of
+                               the default error message
+ -R,--not-root                 Asserts that we are NOT the root user
+ -r,--root                     Asserts that we are the root user
+ -S,--not-started <url>        Asserts that Solr is NOT running on a
+                               certain URL. Default timeout is 1000ms
+ -s,--started <url>            Asserts that Solr is running on a certain
+                               URL. Default timeout is 1000ms
+ -t,--timeout <ms>             Timeout in ms for commands supporting a
+                               timeout
+ -u,--same-user <directory>    Asserts that we run as same user that owns
+                               <directory>
+ -verbose                      Generate verbose log messages
+ -x,--exists <directory>       Asserts that directory <directory> exists
+ -X,--not-exists <directory>   Asserts that directory <directory> does NOT
+                               exist
