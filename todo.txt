@@ -1,0 +1,19 @@
+1. Add printHelp(String) to Tool interface, w/ stubs
+2. Add in real printHelp impls that use Options
+3. Create hide-able options.
+4. Hide appropriate Options when building options.
+5. Filter out "hidden" options in printHelp implementations
+6. Start removing checks in bin/solr
+    start
+    stop
+    restart
+    status
+    healthcheck
+    create
+    create_core
+    create_collection
+    delete
+    version
+    zk
+    auth
+    assert
