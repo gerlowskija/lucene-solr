@@ -1117,9 +1117,8 @@ if [[ "$SCRIPT_CMD" == "delete" ]]; then
     exit 1
   fi
 
-  run_tool delete -name "$DELETE_NAME" -deleteConfig "$DELETE_CONFIG" \
-    -solrUrl "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$DELETE_PORT/solr" \
-    $VERBOSE
+  export SOLR_FULL_URL="$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$DELETE_PORT/solr"
+  run_tool delete -name "$DELETE_NAME" -deleteConfig "$DELETE_CONFIG" $VERBOSE
   exit $?
 fi
 
@@ -1407,7 +1406,8 @@ if [[ "$SCRIPT_CMD" == "auth" ]]; then
         fi
       done
   fi
-  run_tool auth ${AUTH_PARAMS[@]} -solrUrl "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$AUTH_PORT/solr" -authConfDir "$SOLR_HOME" $VERBOSE
+  export SOLR_FULL_URL="$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$AUTH_PORT/solr"
+  run_tool auth ${AUTH_PARAMS[@]} -authConfDir "$SOLR_HOME" $VERBOSE
   exit $?
 fi
 

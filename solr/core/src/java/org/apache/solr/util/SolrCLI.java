@@ -2316,12 +2316,6 @@ public class SolrCLI {
     public Option[] getOptions() {
       return new Option[]{
           OptionBuilder
-              .withArgName("URL")
-              .hasArg()
-              .isRequired(false)
-              .withDescription("Base Solr URL, default is " + DEFAULT_SOLR_URL)
-              .create("solrUrl"),
-          OptionBuilder
               .withArgName("NAME")
               .hasArg()
               .isRequired(true)
@@ -2352,7 +2346,7 @@ public class SolrCLI {
     
     protected void runImpl(CommandLine cli) throws Exception {
       raiseLogLevelUnlessVerbose(cli);
-      String solrUrl = cli.getOptionValue("solrUrl", DEFAULT_SOLR_URL);
+      String solrUrl = readSolrUrlFromEnv();
       if (!solrUrl.endsWith("/"))
         solrUrl += "/";
 
