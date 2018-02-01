@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -140,10 +139,8 @@ public class SolrCLI {
    */
   public interface Tool {
     String getName();    
-    Option[] getOptions();
-    Option[] getExternalOptions();
+    Option[] getOptions();    
     int runTool(CommandLine cli) throws Exception;
-    void printHelp();
   }
 
   public static abstract class ToolBase implements Tool {
@@ -185,17 +182,6 @@ public class SolrCLI {
         }
       }
       return toolExitStatus;
-    }
-    
-    public void printHelp() {
-      final PrintWriter helpWriter = new PrintWriter(stdout);
-      
-      final HelpFormatter helpFormatter = new HelpFormatter();
-      final Options options = new Options();
-      for (Option o : getOptions()) {
-        options.addOption(o);
-      }
-      helpFormatter.printHelp(helpWriter, 80, "solr " + getName(), "Some generic header text", options, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding(), "Some generic footer text", true);
     }
 
     protected abstract void runImpl(CommandLine cli) throws Exception;
@@ -1011,8 +997,7 @@ public class SolrCLI {
             .hasArg()
             .isRequired(false)
             .withDescription("Send a GET request to a Solr API endpoint")
-            .create("get"),
-            OptionBuilder.
+            .create("get")
       };      
     }    
 
