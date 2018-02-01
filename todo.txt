@@ -1,6 +1,5 @@
-1. Add printHelp(String) to Tool interface, w/ stubs
-2. Add in real printHelp impls that use Options
 3. Create hide-able options.
+2. Add in real printHelp impls that use Options
 4. Hide appropriate Options when building options.
 5. Filter out "hidden" options in printHelp implementations
 6. Start removing checks in bin/solr
@@ -17,3 +16,27 @@
     zk
     auth
     assert
+
+DONE
+----
+1. Add printHelp(String) to Tool interface, w/ stubs
+    ApiTool
+    AssertTool
+    AuthTool
+    ConfigSetDownloadTool
+    ConfigSetUploadTool
+    ConfigTool
+    CreateCollectionTool
+    CreateCoreTool
+    CreateTool
+    DeleteTool
+    RunExampleTool
+    SolrCloudTool
+      HealthcheckTool
+    StatusTool
+    UtilsTool
+    ZkCpTool
+    ZkLsTool
+    ZkMkrootTool
+    ZkMvTool
+    ZkRmTool
