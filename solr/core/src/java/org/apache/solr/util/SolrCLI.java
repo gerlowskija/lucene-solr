@@ -242,21 +242,24 @@ public class SolrCLI {
   @SuppressWarnings("static-access")
   public static Option[] cloudOptions =  new Option[] {
     OptionBuilder
-        .withArgName("HOST")
+        .withArgName("zkHost")
         .hasArg()
         .isRequired(false)
-        .withDescription("Address of the Zookeeper ensemble; defaults to: "+ZK_HOST)
-        .create("zkHost"),
+        .withDescription("Zookeeper connection string; default is " + ZK_HOST)
+        .withLongOpt("zkhost")
+        .create("z"),
     OptionBuilder
-        .withArgName("COLLECTION")
+        .withArgName("collection")
         .hasArg()
-        .isRequired(false)
-        .withDescription("Name of collection; no default")
-        .create("collection"),
+        .isRequired(true)
+        .withDescription("Collection to run healthcheck against")
+        .withLongOpt("collection")
+        .create("c"),
     OptionBuilder
         .isRequired(false)
-        .withDescription("Enable more verbose command output.")
-        .create("verbose")
+        .withDescription("Enable more verbose output.")
+        .withLongOpt("verbose")
+        .create("V")
   };
 
   private static void exit(int exitStatus) {

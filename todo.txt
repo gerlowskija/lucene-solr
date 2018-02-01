@@ -5,6 +5,19 @@ Pass solrUrl as env-var (Windows)
   create_collection
   delete
   auth
+Make Options vals, match bin/solr[.cmd]
+  start
+  stop
+  restart
+  status
+  create
+  create_core
+  create_collection
+  delete
+  version
+  zk
+  auth
+  assert
 Make SolrCLI help text match bin/solr's
   start
   stop
@@ -45,3 +58,5 @@ Pass solrUrl as env-var (Linux)
   create_collection
   delete
   auth
+Make Options vals match bin/solr[.cmd]
+  healthcheck
