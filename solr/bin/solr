@@ -689,7 +689,8 @@ function get_info() {
         port=`jetty_port "$ID"`
         if [ "$port" != "" ]; then
           echo -e "\nSolr process $ID running on port $port"
-          run_tool status -solr "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$port/solr"
+          export SOLR_FULL_URL="$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$port/solr"
+          run_tool status
           CODE=$?
           echo ""
         else
@@ -709,7 +710,8 @@ function get_info() {
           if [ "$port" != "" ]; then
             echo ""
             echo "Solr process $ID running on port $port"
-            run_tool status -solr "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$port/solr"
+            export SOLR_FULL_URL="$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$port/solr"
+            run_tool status
             CODE=$?
             echo ""
           fi
@@ -1015,13 +1017,15 @@ if [[ "$SCRIPT_CMD" == "create" || "$SCRIPT_CMD" == "create_core" || "$SCRIPT_CM
     echo "         If you started Solr as root (not advisable either), force core creation by adding argument -force"
     exit 1
   fi
+
+  export SOLR_FULL_URL="$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$CREATE_PORT/solr"
   if [ "$SCRIPT_CMD" == "create_core" ]; then
-    run_tool create_core -name "$CREATE_NAME" -solrUrl "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$CREATE_PORT/solr" \
+    run_tool create_core -name "$CREATE_NAME" \
       -confdir "$CREATE_CONFDIR" -configsetsDir "$SOLR_TIP/server/solr/configsets" \
       $VERBOSE
     exit $?
   else
-    run_tool "$SCRIPT_CMD" -name "$CREATE_NAME" -solrUrl "$SOLR_URL_SCHEME://$SOLR_TOOL_HOST:$CREATE_PORT/solr" \
+    run_tool "$SCRIPT_CMD" -name "$CREATE_NAME" \
       -shards "$CREATE_NUM_SHARDS" -replicationFactor "$CREATE_REPFACT" \
       -confname "$CREATE_CONFNAME" -confdir "$CREATE_CONFDIR" \
       -configsetsDir "$SOLR_TIP/server/solr/configsets" \

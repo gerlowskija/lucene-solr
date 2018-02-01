@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -79,6 +80,7 @@ import org.apache.commons.exec.OS;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NoHttpResponseException;
@@ -141,6 +143,7 @@ public class SolrCLI {
     String getName();    
     Option[] getOptions();    
     int runTool(CommandLine cli) throws Exception;
+    void printHelp();
   }
 
   public static abstract class ToolBase implements Tool {
@@ -183,6 +186,17 @@ public class SolrCLI {
       }
       return toolExitStatus;
     }
+    
+    public void printHelp() {
+      final PrintWriter helpWriter = new PrintWriter(stdout);
+        
+       final HelpFormatter helpFormatter = new HelpFormatter();
+       final Options options = new Options();
+       for (Option o : getOptions()) {
+         options.addOption(o);
+       }
+       helpFormatter.printHelp(helpWriter, 80, "solr " + getName(), "Some generic header text", options, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding(), "Some generic footer text", true);
+     }
 
     protected abstract void runImpl(CommandLine cli) throws Exception;
   }
@@ -842,12 +856,6 @@ public class SolrCLI {
     @SuppressWarnings("static-access")
     public Option[] getOptions() {
       return new Option[] {
-        OptionBuilder
-            .withArgName("URL")
-            .hasArg()
-            .isRequired(false)
-            .withDescription("Address of the Solr Web application, defaults to: "+DEFAULT_SOLR_URL)
-            .create("solr"),
           OptionBuilder
             .withArgName("SECS")
             .hasArg()
@@ -859,7 +867,7 @@ public class SolrCLI {
 
     protected void runImpl(CommandLine cli) throws Exception {
       int maxWaitSecs = Integer.parseInt(cli.getOptionValue("maxWaitSecs", "0"));
-      String solrUrl = cli.getOptionValue("solr", DEFAULT_SOLR_URL);
+      final String solrUrl = readSolrUrlFromEnv();
       if (maxWaitSecs > 0) {
         int solrPort = (new URL(solrUrl)).getPort();
         echo("Waiting up to "+maxWaitSecs+" to see Solr running on port "+solrPort);
@@ -1307,12 +1315,6 @@ public class SolrCLI {
             .withDescription("Address of the Zookeeper ensemble; defaults to: " + ZK_HOST)
             .create("zkHost"),
         OptionBuilder
-            .withArgName("HOST")
-            .hasArg()
-            .isRequired(false)
-            .withDescription("Base Solr URL, which can be used to determine the zkHost if that's not known")
-            .create("solrUrl"),
-        OptionBuilder
             .withArgName("NAME")
             .hasArg()
             .isRequired(true)
@@ -1365,7 +1367,7 @@ public class SolrCLI {
    * Get the base URL of a live Solr instance from either the solrUrl command-line option from ZooKeeper.
    */
   public static String resolveSolrUrl(CommandLine cli) throws Exception {
-    String solrUrl = cli.getOptionValue("solrUrl");
+    String solrUrl = readSolrUrlFromEnvNoDefault();
     if (solrUrl == null) {
       String zkHost = cli.getOptionValue("zkHost");
       if (zkHost == null)
@@ -1394,7 +1396,7 @@ public class SolrCLI {
       return zkHost;
 
     // find it using the localPort
-    String solrUrl = cli.getOptionValue("solrUrl");
+    String solrUrl = readSolrUrlFromEnvNoDefault();
     if (solrUrl == null)
       throw new IllegalStateException(
           "Must provide either the -zkHost or -solrUrl parameters to use the create_collection command!");
@@ -1511,7 +1513,7 @@ public class SolrCLI {
         throw new IllegalStateException("No live nodes found! Cannot create a collection until " +
             "there is at least 1 live node in the cluster.");
       
-      String baseUrl = cli.getOptionValue("solrUrl");
+      String baseUrl = readSolrUrlFromEnvNoDefault();
       if (baseUrl == null) {
         String firstLiveNode = liveNodes.iterator().next();
         baseUrl = cloudSolrClient.getZkStateReader().getBaseUrlForNodeName(firstLiveNode);
@@ -1614,12 +1616,6 @@ public class SolrCLI {
     public Option[] getOptions() {
       return new Option[] {
           OptionBuilder
-              .withArgName("URL")
-              .hasArg()
-              .isRequired(false)
-              .withDescription("Base Solr URL, default is " + DEFAULT_SOLR_URL)
-              .create("solrUrl"),
-          OptionBuilder
               .withArgName("NAME")
               .hasArg()
               .isRequired(true)
@@ -1645,7 +1641,7 @@ public class SolrCLI {
     }
 
     protected void runImpl(CommandLine cli) throws Exception {
-      String solrUrl = cli.getOptionValue("solrUrl", DEFAULT_SOLR_URL);
+      String solrUrl = readSolrUrlFromEnv();
       if (!solrUrl.endsWith("/"))
         solrUrl += "/";
 
@@ -1757,7 +1753,7 @@ public class SolrCLI {
 
     protected void runImpl(CommandLine cli) throws Exception {
       raiseLogLevelUnlessVerbose(cli);
-      String solrUrl = cli.getOptionValue("solrUrl", DEFAULT_SOLR_URL);
+      String solrUrl = readSolrUrlFromEnv();
       if (!solrUrl.endsWith("/"))
         solrUrl += "/";
 
@@ -4310,5 +4306,15 @@ public class SolrCLI {
     public void setQuiet(boolean shouldPrintStdout) {
       this.beQuiet = shouldPrintStdout; 
     }
-  } // end UtilsTool class  
+  } // end UtilsTool class 
+  
+  private static String readSolrUrlFromEnv() {
+    final String envUrl = readSolrUrlFromEnvNoDefault();
+    if (StringUtils.isBlank(envUrl)) return DEFAULT_SOLR_URL;
+    else return envUrl;
+  }
+  
+  private static String readSolrUrlFromEnvNoDefault() {
+    return System.getenv("SOLR_FULL_URL");
+  }
 }
