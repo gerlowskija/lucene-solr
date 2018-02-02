@@ -14,10 +14,8 @@ Make Options vals, match bin/solr[.cmd]
   create_core
   create_collection
   delete
-  version
   zk
   auth
-  assert
 Make SolrCLI help text match bin/solr's
   start
   stop
@@ -31,7 +29,6 @@ Make SolrCLI help text match bin/solr's
   version
   zk
   auth
-  assert
 Remove help text from bin/solr
 Move arg parsing to SolrCLI
   start
@@ -42,10 +39,8 @@ Move arg parsing to SolrCLI
   create_core
   create_collection
   delete
-  version
   zk
   auth
-  assert
 
 DONE
 ----
@@ -59,5 +54,11 @@ Pass solrUrl as env-var (Linux)
   auth
 Make Options vals match bin/solr[.cmd]
   healthcheck
+  assert
+  version
 Move arg parsing to SolrCLI
   healthcheck
+  version
+  assert
+Make SolrCLI help text match bin/solr
+  assert
