@@ -38,7 +38,6 @@ Move arg parsing to SolrCLI
   stop
   restart
   status
-  healthcheck
   create
   create_core
   create_collection
@@ -59,4 +58,6 @@ Pass solrUrl as env-var (Linux)
   delete
   auth
 Make Options vals match bin/solr[.cmd]
+  healthcheck
+Move arg parsing to SolrCLI
   healthcheck

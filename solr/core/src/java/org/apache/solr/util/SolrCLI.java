@@ -214,7 +214,7 @@ public class SolrCLI {
     
     protected void runImpl(CommandLine cli) throws Exception {
       raiseLogLevelUnlessVerbose(cli);
-      String zkHost = cli.getOptionValue("zkHost", ZK_HOST);
+      String zkHost = cli.getOptionValue("zkhost", ZK_HOST);
       
       log.debug("Connecting to Solr cluster: " + zkHost);
       try (CloudSolrClient cloudSolrClient = new CloudSolrClient.Builder().withZkHost(zkHost).build()) {
@@ -1191,8 +1191,11 @@ public class SolrCLI {
     protected void runCloudTool(CloudSolrClient cloudSolrClient, CommandLine cli) throws Exception {
       raiseLogLevelUnlessVerbose(cli);
       String collection = cli.getOptionValue("collection");
-      if (collection == null)
-        throw new IllegalArgumentException("Must provide a collection to run a healthcheck against!");
+      if (collection == null) {
+        echo("collection parameter is required!");
+        echo("JEGERLOW HEALTHCHECK HELP/USAGE TEXT");
+        exit(1);
+      }
       
       log.debug("Running healthcheck for "+collection);
       
